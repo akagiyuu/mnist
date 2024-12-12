@@ -1,0 +1,18 @@
+{
+  "model": {
+    "class_count": 10,
+    "hidden_size": 128
+  },
+  "optimizer": {
+    "weight_decay": null,
+    "grad_clipping": null,
+    "beta_1": 0.9,
+    "beta_2": 0.999,
+    "epsilon": 0.00001
+  },
+  "epoch_count": 20,
+  "batch_size": 1024,
+  "seed": 42,
+  "learning_rate": 0.0001,
+  "worker_count": 4
+}

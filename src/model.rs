@@ -1,8 +1,5 @@
 use burn::{
-    nn::{
-        conv::{Conv2d, Conv2dConfig},
-        Dropout, Linear, Relu,
-    },
+    nn::{Dropout, Linear, Relu},
     prelude::*,
     tensor::{activation::log_softmax, backend::AutodiffBackend},
     train::{ClassificationOutput, TrainOutput, TrainStep, ValidStep},
@@ -13,11 +10,14 @@ use nn::{
     DropoutConfig, LinearConfig,
 };
 
-use crate::data::MnistBatch;
+use crate::{
+    data::MnistBatch,
+    module::{SeparableConv2D, SeparableConv2DConfig},
+};
 
 #[derive(Module, Debug)]
 pub struct Model<B: Backend> {
-    conv: [Conv2d<B>; 2],
+    conv: [SeparableConv2D<B>; 2],
     pool: MaxPool2d,
     linear: [Linear<B>; 2],
 
@@ -31,16 +31,14 @@ impl<B: Backend> Model<B> {
 
         let mut x = images.reshape([batch_size, 1, height, width]);
 
-        for (i, conv) in self.conv.iter().enumerate() {
+        for conv in self.conv.iter() {
             x = conv.forward(x);
-            if i % 2 == 0 {
-                x = self.relu.forward(x);
-            }
+            x = self.relu.forward(x);
         }
         let x = self.pool.forward(x);
         let x = self.dropout[0].forward(x);
 
-        let x = x.reshape([batch_size, 16 * 22 * 22]);
+        let x = x.reshape([batch_size, 16 * 26 * 26]);
         let x = self.linear[0].forward(x);
         let x = self.relu.forward(x);
         let x = self.dropout[1].forward(x);
@@ -87,12 +85,12 @@ impl ModelConfig {
     pub fn init<B: Backend>(&self, device: &B::Device) -> Model<B> {
         Model {
             conv: [
-                Conv2dConfig::new([1, 8], [3, 3]).init(device),
-                Conv2dConfig::new([8, 16], [3, 3]).init(device),
+                SeparableConv2DConfig::new([1, 8], [3, 3]).init(device),
+                SeparableConv2DConfig::new([8, 16], [3, 3]).init(device),
             ],
             pool: MaxPool2dConfig::new([3, 3]).init(),
             linear: [
-                LinearConfig::new(16 * 22 * 22, self.hidden_size).init(device),
+                LinearConfig::new(16 * 26 * 26, self.hidden_size).init(device),
                 LinearConfig::new(self.hidden_size, self.class_count).init(device),
             ],
             relu: Relu::new(),

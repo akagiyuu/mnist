@@ -10,6 +10,7 @@ use training::{train, TrainingConfig};
 pub mod data;
 pub mod model;
 pub mod training;
+pub mod module;
 
 fn main() {
     type Backend = Wgpu<f32, i32>;

@@ -16,10 +16,11 @@
 ## Using depth-wise convolution and point-wise convolution
 - Metrics
 
+| Split | Metric   | Min.     | Epoch    | Max.     | Epoch    |
 |-------|----------|----------|----------|----------|----------|
-| Train | Accuracy | 40.452   | 1        | 94.288   | 20       |
-| Train | Loss     | 0.197    | 20       | 2.075    | 1        |
-| Valid | Accuracy | 76.370   | 1        | 96.440   | 20       |
-| Valid | Loss     | 0.120    | 20       | 1.756    | 1        |
+| Train | Loss     | 0.200    | 20       | 2.090    | 1        |
+| Train | Accuracy | 41.332   | 1        | 94.250   | 20       |
+| Valid | Loss     | 0.122    | 20       | 1.786    | 1        |
+| Valid | Accuracy | 80.680   | 1        | 96.340   | 20       |
 
-- Model size: 2.8mb
+- Model size: 2mb

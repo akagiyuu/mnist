@@ -38,7 +38,7 @@ impl<B: Backend> Model<B> {
         let x = self.pool.forward(x);
         let x = self.dropout[0].forward(x);
 
-        let x = x.reshape([batch_size, 16 * 26 * 26]);
+        let x = x.reshape([batch_size, 16 * 22 * 22]);
         let x = self.linear[0].forward(x);
         let x = self.relu.forward(x);
         let x = self.dropout[1].forward(x);
@@ -90,7 +90,7 @@ impl ModelConfig {
             ],
             pool: MaxPool2dConfig::new([3, 3]).init(),
             linear: [
-                LinearConfig::new(16 * 26 * 26, self.hidden_size).init(device),
+                LinearConfig::new(16 * 22 * 22, self.hidden_size).init(device),
                 LinearConfig::new(self.hidden_size, self.class_count).init(device),
             ],
             relu: Relu::new(),

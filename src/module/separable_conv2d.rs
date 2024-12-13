@@ -28,7 +28,6 @@ impl SeparableConv2DConfig {
                 self.kernel_size,
             )
             .with_groups(self.channels[0])
-            .with_padding(nn::PaddingConfig2d::Same)
             .init(device),
             pointwise: Conv2dConfig::new([self.channels[0], self.channels[1]], [1, 1])
                 .init(device),
